@@ -650,7 +650,7 @@ index 0000000..533ae67
 +}
 +
 +static void
-+mir_eglapp_handle_event (MirWindow *surface, MirEvent const *ev, void *ctx)
++mir_eglapp_handle_event (MirSurface *surface, MirEvent const *ev, void *ctx)
 +{
 +  GstMirSink *sink = ctx;
 +
@@ -694,7 +694,7 @@ index 0000000..533ae67
 +  const MirOutput *display_output;
 +  const MirOutputMode *display_mode;
 +  int pos_x, pos_y;
-+  MirWindowSpec *spec = NULL;
++  MirSurfaceSpec *spec = NULL;
 +  MirPixelFormat pixel_format;
 +  int width, height;
 +  MirBufferStream *buff_stream;
@@ -1318,7 +1318,7 @@ index 0000000..6e3edb5
 +  GstVideoFormat video_format;
 +
 +  MirConnection *conn;
-+  MirWindow *window;
++  MirSurface *window;
 +
 +  EGLDisplay egldisplay;
 +  EGLSurface eglsurface;
