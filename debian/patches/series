@@ -4,4 +4,4 @@
 adding-mirsink-and-android-media-over-hybris-support.patch
 pcfile-requires-plugins-good
 vmncdec_overflow.patch
-desktop-mirsink.patch
+#desktop-mirsink.patch
