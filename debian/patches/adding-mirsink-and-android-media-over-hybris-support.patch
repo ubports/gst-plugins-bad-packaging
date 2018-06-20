@@ -6075,10 +6075,10 @@ index 0000000..f01a873
 +  const gchar *ignore;
 +
 +  GST_DEBUG_CATEGORY_INIT (gst_amc_debug, "amc", 0, "android-media-codec");
-+
++  GST_DEBUG ("1 %s", __PRETTY_FUNCTION__);
 +  gst_plugin_add_dependency_simple (plugin, NULL, "/system/etc",
 +      "media_codecs.xml", GST_PLUGIN_DEPENDENCY_FLAG_NONE);
-+
++  GST_DEBUG ("2 %s", __PRETTY_FUNCTION__);
 +  /* Set this to TRUE to allow registering decoders that have
 +   * any unknown color formats, or encoders that only have
 +   * unknown color formats
@@ -6086,16 +6086,16 @@ index 0000000..f01a873
 +  ignore = g_getenv ("GST_AMC_IGNORE_UNKNOWN_COLOR_FORMATS");
 +  if (ignore && strcmp (ignore, "yes") == 0)
 +    ignore_unknown_color_formats = TRUE;
-+
++  GST_DEBUG ("3 %s", __PRETTY_FUNCTION__);
 +  /* Check if the media compat layer is available */
 +  if (!media_compat_check_availability ())
 +    return FALSE;
-+
++  GST_DEBUG ("4 %s", __PRETTY_FUNCTION__);
 +  if (!scan_codecs (plugin))
 +    return FALSE;
-+
++  GST_DEBUG ("5 %s", __PRETTY_FUNCTION__);
 +  gst_amc_codec_info_quark = g_quark_from_static_string ("gst-amc-codec-info");
-+
++  GST_DEBUG ("6 %s", __PRETTY_FUNCTION__);
 +  if (!register_codecs (plugin))
 +    return FALSE;
 +
