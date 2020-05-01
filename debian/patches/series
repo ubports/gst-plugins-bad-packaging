@@ -5,3 +5,4 @@ adding-mirsink-and-android-media-over-hybris-support.patch
 pcfile-requires-plugins-good
 vmncdec_overflow.patch
 #desktop-mirsink.patch
+0001-Add-UBWC-color-support-to-androidmedia-hybris.patch
