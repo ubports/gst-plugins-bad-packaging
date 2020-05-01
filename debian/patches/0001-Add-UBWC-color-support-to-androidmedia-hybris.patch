@@ -1,0 +1,60 @@
+From 8ce5adf5cd36ac873c369689e7a90c5212e217f0 Mon Sep 17 00:00:00 2001
+From: Erfan Abdi <erfangplus@gmail.com>
+Date: Wed, 29 Apr 2020 18:31:46 +0000
+Subject: [PATCH 1/1] Add UBWC color support to androidmedia-hybris
+
+---
+ sys/androidmedia/gstamc-constants.h     | 1 +
+ sys/androidmedia/gstamchybris.c         | 3 ++-
+ sys/androidmedia/gstamcvideodechybris.c | 2 ++
+ 3 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/sys/androidmedia/gstamc-constants.h b/sys/androidmedia/gstamc-constants.h
+index 8ef701f..fbe2d57 100644
+--- a/sys/androidmedia/gstamc-constants.h
++++ b/sys/androidmedia/gstamc-constants.h
+@@ -106,6 +106,7 @@ enum
+   /* NV12 but with stride and plane heights aligned to 32, Stores two images,
+    * one after the other in top-bottom layout */
+   COLOR_QCOM_FormatYVU420SemiPlanar32mMultiView = 0x7fa30c05,
++  COLOR_QCOM_FormatYUV420SemiPlanarUBWC = 0x7fa30c06,
+   /* From hardware/ti/omap4xxx/domx/omx_core/inc/OMX_TI_IVCommon.h */
+   COLOR_TI_FormatYUV420PackedSemiPlanarInterlaced = 0x7f000001,
+   COLOR_FormatYUV420Flexible = 0x7f420888,
+diff --git a/sys/androidmedia/gstamchybris.c b/sys/androidmedia/gstamchybris.c
+index 22d0ab8..8c45533 100644
+--- a/sys/androidmedia/gstamchybris.c
++++ b/sys/androidmedia/gstamchybris.c
+@@ -1478,7 +1478,8 @@ static const struct
+   263, GST_VIDEO_FORMAT_NV12}, {
+   COLOR_MTK_FormatYV12, GST_VIDEO_FORMAT_YV12}, {
+   COLOR_QCOM_FormatYVU420SemiPlanar32m, GST_VIDEO_FORMAT_NV12}, {
+-  COLOR_QCOM_FormatYVU420SemiPlanar32mMultiView, GST_VIDEO_FORMAT_NV12}
++  COLOR_QCOM_FormatYVU420SemiPlanar32mMultiView, GST_VIDEO_FORMAT_NV12}, {
++  COLOR_QCOM_FormatYUV420SemiPlanarUBWC, GST_VIDEO_FORMAT_NV12}
+ };
+ 
+ static gboolean
+diff --git a/sys/androidmedia/gstamcvideodechybris.c b/sys/androidmedia/gstamcvideodechybris.c
+index 5a97e88..c686385 100644
+--- a/sys/androidmedia/gstamcvideodechybris.c
++++ b/sys/androidmedia/gstamcvideodechybris.c
+@@ -906,6 +906,7 @@ gst_amc_color_format_info_set (GstAmcColorFormatInfo * color_format_info,
+     case COLOR_QCOM_FormatYUV420SemiPlanar:
+     case COLOR_QCOM_FormatYVU420SemiPlanar32m:
+     case COLOR_QCOM_FormatYVU420SemiPlanar32mMultiView:
++    case COLOR_QCOM_FormatYUV420SemiPlanarUBWC:
+     case COLOR_FormatYUV420SemiPlanar:{
+       if (stride == 0 || slice_height == 0) {
+         GST_ERROR ("Stride or slice height is 0");
+@@ -1160,6 +1161,7 @@ gst_amc_video_dec_fill_buffer (GstAmcVideoDec * self, gint idx,
+       case COLOR_QCOM_FormatYUV420SemiPlanar:
+       case COLOR_QCOM_FormatYVU420SemiPlanar32m:
+       case COLOR_QCOM_FormatYVU420SemiPlanar32mMultiView:
++      case COLOR_QCOM_FormatYUV420SemiPlanarUBWC:
+       case COLOR_FormatYUV420SemiPlanar:{
+         gint i, j, height;
+         guint8 *src, *dest;
+-- 
+2.7.4
+
