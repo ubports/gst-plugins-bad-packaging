@@ -1,0 +1,33 @@
+From 8c0504cf07589516a3a94854bdd7a8bb60056177 Mon Sep 17 00:00:00 2001
+From: NeKit <nekit1000@gmail.com>
+Date: Fri, 10 Jul 2020 02:07:55 +0200
+Subject: [PATCH] Add handling for COLOR_MTK_FormatYUVPrivate
+
+---
+ sys/androidmedia/gstamcvideodechybris.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/sys/androidmedia/gstamcvideodechybris.c b/sys/androidmedia/gstamcvideodechybris.c
+index 5a97e88..c0e4270 100644
+--- a/sys/androidmedia/gstamcvideodechybris.c
++++ b/sys/androidmedia/gstamcvideodechybris.c
+@@ -923,6 +923,16 @@ gst_amc_color_format_info_set (GstAmcColorFormatInfo * color_format_info,
+           tile_pos (tile_w, tile_h_luma, tile_w_align, tile_h_luma) * TILE_SIZE;
+       break;
+     }
++    case COLOR_MTK_FormatYUVPrivate:{
++      GST_WARNING ("Got COLOR_MTK_FormatYUVPrivate");
++      if (stride == 0 || slice_height == 0) {
++        GST_ERROR ("Stride or slice height is 0");
++        return FALSE;
++      }
++
++      frame_size = stride * slice_height + stride * ((slice_height + 1) / 2);
++      break;
++    }
+     default:
+       GST_ERROR ("Unsupported color format %d", color_format);
+       return FALSE;
+-- 
+2.27.0
+

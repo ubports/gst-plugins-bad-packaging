@@ -2,6 +2,7 @@
 02_opencv-linking.patch
 0001-Make-sure-to-link-gme-plugin-with-lz.patch
 adding-mirsink-and-android-media-over-hybris-support.patch
+0002-Add-handling-for-COLOR_MTK_FormatYUVPrivate.patch
 pcfile-requires-plugins-good
 vmncdec_overflow.patch
 #desktop-mirsink.patch
