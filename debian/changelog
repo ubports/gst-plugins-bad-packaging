@@ -1,3 +1,9 @@
+gst-plugins-bad1.0 (1.8.3-2ubports1) xenial; urgency=medium
+
+  * gstreamer1.0-hybris: Add UBWC color support
+
+ -- TheKit <thekit@disroot.org>  Mon, 19 Oct 2020 21:57:33 +0300
+
 gst-plugins-bad1.0 (1.8.3-1ubuntu0.3~overlay2) xenial; urgency=medium
 
   * Rebuild after minor changes to mirsink
