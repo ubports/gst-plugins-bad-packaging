@@ -1,0 +1,63 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: TheKit <nekit1000@gmail.com>
+Date: Fri, 13 Aug 2021 02:04:51 +0300
+Subject: [PATCH] Add color formats found on MediaTek A10 devices to
+ androidmedia-hybris
+
+---
+ sys/androidmedia/gstamc-constants.h     | 1 +
+ sys/androidmedia/gstamchybris.c         | 3 +++
+ sys/androidmedia/gstamcvideodechybris.c | 2 ++
+ 3 files changed, 6 insertions(+)
+
+diff --git a/sys/androidmedia/gstamc-constants.h b/sys/androidmedia/gstamc-constants.h
+index fbe2d57..414f66a 100644
+--- a/sys/androidmedia/gstamc-constants.h
++++ b/sys/androidmedia/gstamc-constants.h
+@@ -94,6 +94,7 @@ enum
+   COLOR_Format24BitABGR6666 = 43,
+   COLOR_MTK_FormatYUVPrivate = 0x32315679,
+   COLOR_FormatAndroidOpaque = 0x7F000789,
++  COLOR_Format32bitABGR8888 = 0x7f00a000,
+   /* From hardware/ti/omap4xxx/domx/omx_core/inc/OMX_TI_IVCommon.h */
+   COLOR_TI_COLOR_FormatYUV420PackedSemiPlanar = 0x100,
+   COLOR_TI_FormatYUV420PackedSemiPlanar = 0x7f000100,
+diff --git a/sys/androidmedia/gstamchybris.c b/sys/androidmedia/gstamchybris.c
+index 1ae5073..e5d01fa 100644
+--- a/sys/androidmedia/gstamchybris.c
++++ b/sys/androidmedia/gstamchybris.c
+@@ -1464,8 +1464,11 @@ static const struct
+   COLOR_MTK_FormatYUVPrivate, GST_VIDEO_FORMAT_NV12}, {
+   COLOR_FormatYUV420Flexible, GST_VIDEO_FORMAT_I420}, {
+   COLOR_FormatYUV420Planar, GST_VIDEO_FORMAT_I420}, {
++  COLOR_FormatYUV420PackedPlanar, GST_VIDEO_FORMAT_I420}, {
+   COLOR_FormatYUV420SemiPlanar, GST_VIDEO_FORMAT_NV12}, {
++  COLOR_FormatYUV420PackedSemiPlanar, GST_VIDEO_FORMAT_NV12}, {
+   261, GST_VIDEO_FORMAT_NV12}, {
++  COLOR_Format32bitABGR8888, GST_VIDEO_FORMAT_ABGR}, {
+   COLOR_TI_FormatYUV420PackedSemiPlanar, GST_VIDEO_FORMAT_NV12}, {
+   COLOR_TI_FormatYUV420PackedSemiPlanarInterlaced, GST_VIDEO_FORMAT_NV12}, {
+   COLOR_QCOM_FormatYUV420SemiPlanar, GST_VIDEO_FORMAT_NV12}, {
+diff --git a/sys/androidmedia/gstamcvideodechybris.c b/sys/androidmedia/gstamcvideodechybris.c
+index c686385..d8ab91e 100644
+--- a/sys/androidmedia/gstamcvideodechybris.c
++++ b/sys/androidmedia/gstamcvideodechybris.c
+@@ -891,6 +891,7 @@ gst_amc_color_format_info_set (GstAmcColorFormatInfo * color_format_info,
+               1) / 2);
+       break;
+     }
++    case COLOR_FormatYUV420PackedSemiPlanar:
+     case COLOR_TI_FormatYUV420PackedSemiPlanar:
+     case COLOR_TI_FormatYUV420PackedSemiPlanarInterlaced:{
+       if (stride == 0 || slice_height == 0) {
+@@ -1089,6 +1090,7 @@ gst_amc_video_dec_fill_buffer (GstAmcVideoDec * self, gint idx,
+         ret = TRUE;
+         break;
+       }
++      case COLOR_FormatYUV420PackedSemiPlanar:
+       case COLOR_TI_COLOR_FormatYUV420PackedSemiPlanar:
+       case COLOR_TI_FormatYUV420PackedSemiPlanar:
+       case COLOR_TI_FormatYUV420PackedSemiPlanarInterlaced:{
+-- 
+2.32.0
+
