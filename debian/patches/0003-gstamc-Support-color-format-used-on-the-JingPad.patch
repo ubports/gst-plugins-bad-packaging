@@ -1,0 +1,52 @@
+From 1fd8c08fa5151a5e98c66cc6d99c570409a015ac Mon Sep 17 00:00:00 2001
+From: Alfred Neumayer <dev.beidl@gmail.com>
+Date: Tue, 1 Mar 2022 17:15:08 +0100
+Subject: [PATCH] gstamc: Support color format used on the JingPad
+
+---
+ sys/androidmedia/gstamc-constants.h     | 1 +
+ sys/androidmedia/gstamchybris.c         | 1 +
+ sys/androidmedia/gstamcvideodechybris.c | 3 ++-
+ 3 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/sys/androidmedia/gstamc-constants.h b/sys/androidmedia/gstamc-constants.h
+index 414f66a..f1abd75 100644
+--- a/sys/androidmedia/gstamc-constants.h
++++ b/sys/androidmedia/gstamc-constants.h
+@@ -92,6 +92,7 @@ enum
+   COLOR_Format18BitBGR666 = 41,
+   COLOR_Format24BitARGB6666 = 42,
+   COLOR_Format24BitABGR6666 = 43,
++  COLOR_SPRD_FormatYCbCr420SP = 0x106,
+   COLOR_MTK_FormatYUVPrivate = 0x32315679,
+   COLOR_FormatAndroidOpaque = 0x7F000789,
+   COLOR_Format32bitABGR8888 = 0x7f00a000,
+diff --git a/sys/androidmedia/gstamchybris.c b/sys/androidmedia/gstamchybris.c
+index e5d01fa..62194bb 100644
+--- a/sys/androidmedia/gstamchybris.c
++++ b/sys/androidmedia/gstamchybris.c
+@@ -1461,6 +1461,7 @@ static const struct
+   GstVideoFormat video_format;
+ } color_format_mapping_table[] = {
+   {
++  COLOR_SPRD_FormatYCbCr420SP, GST_VIDEO_FORMAT_I420}, {
+   COLOR_MTK_FormatYUVPrivate, GST_VIDEO_FORMAT_NV12}, {
+   COLOR_FormatYUV420Flexible, GST_VIDEO_FORMAT_I420}, {
+   COLOR_FormatYUV420Planar, GST_VIDEO_FORMAT_I420}, {
+diff --git a/sys/androidmedia/gstamcvideodechybris.c b/sys/androidmedia/gstamcvideodechybris.c
+index d8ab91e..75e2b01 100644
+--- a/sys/androidmedia/gstamcvideodechybris.c
++++ b/sys/androidmedia/gstamcvideodechybris.c
+@@ -908,7 +908,8 @@ gst_amc_color_format_info_set (GstAmcColorFormatInfo * color_format_info,
+     case COLOR_QCOM_FormatYVU420SemiPlanar32m:
+     case COLOR_QCOM_FormatYVU420SemiPlanar32mMultiView:
+     case COLOR_QCOM_FormatYUV420SemiPlanarUBWC:
+-    case COLOR_FormatYUV420SemiPlanar:{
++    case COLOR_FormatYUV420SemiPlanar:
++    case COLOR_SPRD_FormatYCbCr420SP:{
+       if (stride == 0 || slice_height == 0) {
+         GST_ERROR ("Stride or slice height is 0");
+         return FALSE;
+-- 
+2.32.0 (Apple Git-132)
+
