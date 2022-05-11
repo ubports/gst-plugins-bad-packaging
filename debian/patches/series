@@ -7,3 +7,5 @@ vmncdec_overflow.patch
 0001-Add-UBWC-color-support-to-androidmedia-hybris.patch
 0002-Add-color-formats-found-on-MediaTek-A10-devices-to-a.patch
 0003-gstamc-Support-color-format-used-on-the-JingPad.patch
+0004-gstamc-Support-color-formats-used-on-Galaxy-S9.patch
+0005-gstamc-Add-COLOR_Format16bitRGB565-to-color-format-m.patch

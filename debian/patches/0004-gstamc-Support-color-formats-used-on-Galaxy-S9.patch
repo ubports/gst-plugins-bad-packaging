@@ -1,0 +1,61 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: TheKit <nekit1000@gmail.com>
+Date: Sun, 27 Mar 2022 14:03:15 +0300
+Subject: [PATCH] gstamc: Support color formats used on Galaxy S9/S10/S20
+
+---
+ sys/androidmedia/gstamc-constants.h | 3 +++
+ sys/androidmedia/gstamchybris.c     | 7 ++++++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/sys/androidmedia/gstamc-constants.h b/sys/androidmedia/gstamc-constants.h
+index f1abd75..e4bb511 100644
+--- a/sys/androidmedia/gstamc-constants.h
++++ b/sys/androidmedia/gstamc-constants.h
+@@ -99,6 +99,8 @@ enum
+   /* From hardware/ti/omap4xxx/domx/omx_core/inc/OMX_TI_IVCommon.h */
+   COLOR_TI_COLOR_FormatYUV420PackedSemiPlanar = 0x100,
+   COLOR_TI_FormatYUV420PackedSemiPlanar = 0x7f000100,
++  /* From frameworks/native/headers/media_plugin/media/openmax/OMX_IVCommon.h */
++  COLOR_FormatYUV420Planar16 = 0x7f42016b,
+   COLOR_INTEL_FormatYUV420PackedSemiPlanar = 0x7fa00e00,
+   COLOR_INTEL_FormatYUV420PackedSemiPlanar_Tiled = 0x7fa00f00,
+   COLOR_QCOM_FormatYUV420SemiPlanar = 0x7fa30c00,
+@@ -122,6 +124,7 @@ enum
+   COLOR_EXYNOS_FormatNV21Linear = 0x7f000011,
+   COLOR_EXYNOS_FormatYVU420Planar = 0x7F000012,
+   COLOR_EXYNOS_Format32bitABGR8888 = 0x7F000013,
++  COLOR_EXYNOS_FormatUnknown1 = 0x7F000019,
+   /* YV12: http://developer.android.com/reference/android/graphics/ImageFormat.html#YV12 */
+   COLOR_FormatYV12 = 0x32315659,
+   /* MTK formats. FormatYV12 is used by VP8/9. */
+diff --git a/sys/androidmedia/gstamchybris.c b/sys/androidmedia/gstamchybris.c
+index 62194bb..9d2a01c 100644
+--- a/sys/androidmedia/gstamchybris.c
++++ b/sys/androidmedia/gstamchybris.c
+@@ -1470,8 +1470,11 @@ static const struct
+   COLOR_FormatYUV420PackedSemiPlanar, GST_VIDEO_FORMAT_NV12}, {
+   261, GST_VIDEO_FORMAT_NV12}, {
+   COLOR_Format32bitABGR8888, GST_VIDEO_FORMAT_ABGR}, {
++  COLOR_Format32bitARGB8888, GST_VIDEO_FORMAT_ARGB}, {
+   COLOR_TI_FormatYUV420PackedSemiPlanar, GST_VIDEO_FORMAT_NV12}, {
+   COLOR_TI_FormatYUV420PackedSemiPlanarInterlaced, GST_VIDEO_FORMAT_NV12}, {
++  /* FIXME: should be GST_VIDEO_FORMAT_I420_12LE, but current gstreamer is too old */
++  COLOR_FormatYUV420Planar16, GST_VIDEO_FORMAT_I420_10LE}, {
+   COLOR_QCOM_FormatYUV420SemiPlanar, GST_VIDEO_FORMAT_NV12}, {
+   COLOR_QCOM_FormatYUV420PackedSemiPlanar64x32Tile2m8ka, GST_VIDEO_FORMAT_NV12}, {
+   COLOR_EXYNOS_FormatNV12Tiled, GST_VIDEO_FORMAT_NV12}, {
+@@ -1495,7 +1498,9 @@ accepted_color_formats (GstAmcCodecType * type, gboolean is_encoder)
+   for (i = 0; i < type->n_color_formats; i++) {
+     gboolean found = FALSE;
+     /* We ignore this one */
+-    if (type->color_formats[i] == COLOR_FormatAndroidOpaque)
++    if (type->color_formats[i] == COLOR_FormatAndroidOpaque
++        /* found on Galaxy S20, but not defined anywhere in public headers */
++        || type->color_formats[i] == COLOR_EXYNOS_FormatUnknown1)
+       all--;
+ 
+     for (j = 0; j < G_N_ELEMENTS (color_format_mapping_table); j++) {
+-- 
+2.34.1
+
