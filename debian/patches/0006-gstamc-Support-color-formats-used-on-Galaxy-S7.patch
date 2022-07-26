@@ -1,0 +1,30 @@
+diff -ru ../pre_s7_patch/sys/androidmedia/gstamc-constants.h ./sys/androidmedia/gstamc-constants.h
+--- ../pre_s7_patch/sys/androidmedia/gstamc-constants.h	2022-07-17 02:19:48.126042425 +0800
++++ ./sys/androidmedia/gstamc-constants.h	2022-07-17 02:14:48.534639463 +0800
+@@ -129,7 +129,11 @@
+   COLOR_FormatYV12 = 0x32315659,
+   /* MTK formats. FormatYV12 is used by VP8/9. */
+   COLOR_MTK_FormatYV12 = 0x7f000200,
+-  COLOR_MTK_FormatBitStream = 0x7f000300
++  COLOR_MTK_FormatBitStream = 0x7f000300,
++  /* Galaxy S7 outputs 0x121
++   * https://github.com/LineageOS/android_hardware_samsung_slsi_exynos/blob/fb9857c5aa8923cc043b8f8a91bd24339c4bf528/include/exynos_format.h#L55
++   * kernel outputs V4L2_PIX_FMT_NV12M */
++  COLOR_EXYNOS_FormatYCbCr_420_SP_M_PRIV = 0x121
+ };
+ 
+ enum
+diff -ru ../pre_s7_patch/sys/androidmedia/gstamchybris.c ./sys/androidmedia/gstamchybris.c
+--- ../pre_s7_patch/sys/androidmedia/gstamchybris.c	2022-07-17 02:19:48.128042421 +0800
++++ ./sys/androidmedia/gstamchybris.c	2022-07-17 19:25:58.786196264 +0800
+@@ -1487,7 +1487,9 @@
+   COLOR_MTK_FormatYV12, GST_VIDEO_FORMAT_YV12}, {
+   COLOR_QCOM_FormatYVU420SemiPlanar32m, GST_VIDEO_FORMAT_NV12}, {
+   COLOR_QCOM_FormatYVU420SemiPlanar32mMultiView, GST_VIDEO_FORMAT_NV12}, {
+-  COLOR_QCOM_FormatYUV420SemiPlanarUBWC, GST_VIDEO_FORMAT_NV12}
++  COLOR_QCOM_FormatYUV420SemiPlanarUBWC, GST_VIDEO_FORMAT_NV12}, {
++  /* Galaxy S7 outputs nv12m from kernel, no idea what comes out of omx */
++  COLOR_EXYNOS_FormatYCbCr_420_SP_M_PRIV, GST_VIDEO_FORMAT_NV12}
+ };
+ 
+ static gboolean
